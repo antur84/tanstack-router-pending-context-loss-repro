@@ -6,7 +6,6 @@ export function getRouter() {
     routeTree,
     defaultSsr: false,
     context: {},
-    defaultPreload: 'intent',
     defaultPendingComponent: () => <p>loading…</p>,
     defaultPendingMs: 150,
     defaultPendingMinMs: 300,
