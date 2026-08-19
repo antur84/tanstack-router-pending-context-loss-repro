@@ -23,6 +23,23 @@ The console logs `ROOT_RENDER locale=undefined` and the root `errorComponent`
 takes over: the root route's component re-rendered while `useRouteContext().locale`
 — provided by the root `beforeLoad` on every previous render — was gone.
 
+In both cases the root `errorComponent` shows briefly and the navigation then
+completes — the stripped render happens mid-load, and the load's own commit
+replaces it. In a real app every flash is a rendered crash screen plus an
+error report; components that cache the bad value (an i18n runtime seeded from
+context, say) can stay broken past the flash.
+
+Two things to know when clicking around:
+
+- **One attempt per page load.** Once `/other` has rendered, later
+  navigations retain it — no match goes pending, so the mid-load presentation
+  that exposes the stripped context never happens. Hard-reload between
+  attempts.
+- **Hover preloading masks it.** With `defaultPreload: 'intent'`, hovering
+  the link pre-runs the load, so a mouse click navigates outside the
+  vulnerable window. This repro disables preload; in production the bug
+  correspondingly skews to touch devices, where intent preloading never fires.
+
 The `old-versions-clean` branch pins `@tanstack/react-router` 1.170.15 /
 `@tanstack/react-start` 1.168.25: same app, same clicks, no context loss.
 
