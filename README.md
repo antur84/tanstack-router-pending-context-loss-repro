@@ -6,6 +6,15 @@ component that treats those keys as always-present. Regression between
 `@tanstack/react-router` 1.170.15 and 1.170.29 (the lane loader rewrite).
 Filed as https://github.com/TanStack/router/issues/8115.
 
+**Update:** `@tanstack/react-router` 1.170.30 (router-core 1.171.25) no longer
+crashes in this repro — TanStack/router#8084 ("preserve pending UI across
+retained routes") moved the pending-presentation arming inside the
+`index >= retainedEnd` gate, so nothing presents while a retained match's
+`beforeLoad` is mid-flight. The two-step `match.context` assignment (the
+stripped window on the live lane match) is still present in 1.171.25, so the
+hardening suggested below remains relevant; the rendering path just no longer
+observes it.
+
 ## Run
 
 ```
