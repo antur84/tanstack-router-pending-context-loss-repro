@@ -4,6 +4,7 @@ On client-side navigation, a route's rendered `useRouteContext()` can lose every
 key its `beforeLoad` provides — for the duration of the reload — crashing any
 component that treats those keys as always-present. Regression between
 `@tanstack/react-router` 1.170.15 and 1.170.29 (the lane loader rewrite).
+Filed as https://github.com/TanStack/router/issues/8115.
 
 ## Run
 
